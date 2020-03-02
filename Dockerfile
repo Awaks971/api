@@ -18,3 +18,21 @@ EXPOSE 8080
 
 # Start the application
 CMD ["yarn", "dev"]
+
+
+ # -------------------
+ # --- Nginx setup ---
+ # -------------------
+
+# Use stable version of Nginx
+FROM nginx:stable
+
+# Remove old default nginx conf
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copy Nginx configuration into the real server
+COPY ./nginx.conf /etc/nginx/conf.d
+
+EXPOSE 80
+
+CMD ["nginx","-g","daemon off;"]
