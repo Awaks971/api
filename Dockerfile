@@ -1,4 +1,3 @@
-# Use the lightest version of NodeJS
 FROM node:10
 
 RUN mkdir -p /usr/src/app/awaks-server
@@ -9,7 +8,7 @@ WORKDIR /usr/src/app/awaks-server
 COPY package*.json /usr/src/app/awaks-server/
 
 # Install dependencies
-RUN yarn
+RUN npm install
 
 # If dependencies are installed, copy the rest of the project
 COPY . /usr/src/app/awaks-server
