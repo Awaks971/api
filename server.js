@@ -27,7 +27,7 @@ app.use(headers);
  * Login handler to set token in GraphQL context
  */
 
-app.post("/login", headers, loginHandler);
+app.post("/api/login", headers, loginHandler);
 
 /**
  * GraphQL setup
