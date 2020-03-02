@@ -9,7 +9,7 @@ WORKDIR /usr/src/app/awaks-server
 COPY package*.json /usr/src/app/awaks-server/
 
 # Install dependencies
-RUN npm install
+RUN yarn
 
 # If dependencies are installed, copy the rest of the project
 COPY . /usr/src/app/awaks-server
@@ -17,4 +17,4 @@ COPY . /usr/src/app/awaks-server
 EXPOSE 8080
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "dev"]
