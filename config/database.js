@@ -2,6 +2,7 @@ const mysql = require("mysql");
 
 const {
   AWAKS_MYSQL_HOST,
+  AWAKS_MYSQL_PORT,
   AWAKS_MYSQL_USER,
   AWAKS_MYSQL_PASSWORD,
   AWAKS_MYSQL_DATABASE
@@ -17,6 +18,7 @@ const pool = mysql.createPool({
   user: AWAKS_MYSQL_USER,
   password: AWAKS_MYSQL_PASSWORD,
   database: AWAKS_MYSQL_DATABASE,
+  port: AWAKS_MYSQL_PORT,
   connectionLimit: 5
 });
 
