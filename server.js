@@ -14,6 +14,9 @@ const headers = require("./config/headers");
 const app = express();
 const loginHandler = require("./config/login");
 
+const session = require("express-session");
+const MemoryStore = require("memorystore")(session);
+
 /**
  * Apply some middlewares
  */
@@ -22,6 +25,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(headers);
+
+app.use(
+  session({
+    cookie: { maxAge: 10 },
+    store: new MemoryStore({
+      checkPeriod: 10 // prune expired entries every hour
+    }),
+    secret: "AwaksGu@deloupe#971",
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 /**
  * Login handler to set token in GraphQL context

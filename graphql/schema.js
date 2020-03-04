@@ -27,7 +27,11 @@ const schema = gql`
       order_ASC: Boolean
       order_DESC: Boolean
       amount_ttc_sum: Boolean
-      sum_CA_HT: Boolean
+      canceled_lines_sum: Boolean
+
+      basket_median: Boolean
+      profit_sum: Boolean
+
       receipt_sum: Boolean
       range: RangeInputType
     ): [CashJournal]

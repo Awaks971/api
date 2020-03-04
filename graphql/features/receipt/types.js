@@ -66,7 +66,7 @@ const ReceiptType = gql`
   # So I decided to name this type StatsArticle
   # Temporary workaround to rename it :)
   type StatsArticle {
-    id: ID
+    article_id: ID
     label: String
     profit: Float
     amount_ttc: Float

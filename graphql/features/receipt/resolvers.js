@@ -98,16 +98,19 @@ async function articles_stats(
 
   const stats = await DB.queryAsync(`
     SELECT 
-      label, profit, amount_ttc, article_count, id
+      TRIM(label) AS label,
+      SUM(profit) AS profit,
+      SUM(amount_ttc) AS amount_ttc,
+      SUM(article_count) AS article_count,
+      article_id
     FROM 
       receipt_line
     ${FILTER_BY_RANGE}  
     ${FILTER_BY_RANGE ? "AND" : "WHERE"} 
       store_id = "${loggedAs.id}"
-    GROUP 
-      BY article_id  
-    
-
+    GROUP BY 
+      article_id, 
+      label
     ${ORDER_BY}
     ${LIMIT}
     ${START_AT}
