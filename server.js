@@ -28,9 +28,9 @@ app.use(headers);
 
 app.use(
   session({
-    cookie: { maxAge: 10 },
+    cookie: { maxAge: 3600 },
     store: new MemoryStore({
-      checkPeriod: 10 // prune expired entries every hour
+      checkPeriod: 3600 // prune expired entries every hour
     }),
     secret: "AwaksGu@deloupe#971",
     resave: true,
