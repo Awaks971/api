@@ -48,7 +48,8 @@ async function cash_journals(
 
   SQLQuery = ` 
     SELECT 
-      date
+      date,
+      id
       ${SUM_TTC}
       ${SUM_RECEIPT}
       ${SUM_CANCELED_LINES}
@@ -61,7 +62,11 @@ async function cash_journals(
       ${ODER_ASC}
       ${ODER_DESC}
 `;
+
+  // console.log(SQLQuery);
   const journals = await DB.queryAsync(SQLQuery);
+
+  // console.log(journals);
   return journals;
 }
 

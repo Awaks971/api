@@ -96,6 +96,25 @@ async function articles_stats(
   const START_AT = start_at ? `OFFSET ${start_at}` : "";
   const ORDER_BY = order_by ? `ORDER BY ${order_by} DESC` : "";
 
+  console.log(`
+  SELECT 
+    TRIM(label) AS label,
+    SUM(profit) AS profit,
+    SUM(amount_ttc) AS amount_ttc,
+    SUM(article_count) AS article_count,
+    article_id
+  FROM 
+    receipt_line
+  ${FILTER_BY_RANGE}  
+  ${FILTER_BY_RANGE ? "AND" : "WHERE"} 
+    store_id = "${loggedAs.id}"
+  GROUP BY 
+    article_id, 
+    label
+  ${ORDER_BY}
+  ${LIMIT}
+  ${START_AT}
+`);
   const stats = await DB.queryAsync(`
     SELECT 
       TRIM(label) AS label,
