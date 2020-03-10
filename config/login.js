@@ -42,7 +42,7 @@ async function login(req, res, next) {
     );
     if (user.login_attempts === 1) {
       await DB.queryAsync(
-        s`UPDATE user SET status="locked" WHERE email="${user.email}"`
+        `UPDATE user SET status="locked" WHERE email="${user.email}"`
       );
       await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/lock-user-account`, {
         user
