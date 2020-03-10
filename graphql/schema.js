@@ -61,6 +61,7 @@ const schema = gql`
     disable_user(userId: ID!, status: String!): User
     valid_user(userId: ID!, company_id: ID!): User
     finish_register(user: FinishRegisterInputType!): User
+    lock_account(user: LockAccount!): User
   }
 `;
 

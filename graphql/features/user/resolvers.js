@@ -97,10 +97,19 @@ async function switch_company(root, { company }, { ...context }) {
   return cleanContext;
 }
 
+async function lock_account(root, { user }) {
+  await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/lock-user-account`, {
+    user
+  });
+
+  return {};
+}
+
 module.exports = {
   me,
   register,
   switch_company,
+  lock_account,
   users,
   disable_user,
   valid_user,

@@ -96,30 +96,11 @@ async function articles_stats(
   const START_AT = start_at ? `OFFSET ${start_at}` : "";
   const ORDER_BY = order_by ? `ORDER BY ${order_by} DESC` : "";
 
-  console.log(`
-  SELECT 
-    TRIM(label) AS label,
-    SUM(profit) AS profit,
-    SUM(amount_ttc) AS amount_ttc,
-    SUM(article_count) AS article_count,
-    article_id
-  FROM 
-    receipt_line
-  ${FILTER_BY_RANGE}  
-  ${FILTER_BY_RANGE ? "AND" : "WHERE"} 
-    store_id = "${loggedAs.id}"
-  GROUP BY 
-    article_id, 
-    label
-  ${ORDER_BY}
-  ${LIMIT}
-  ${START_AT}
-`);
   const stats = await DB.queryAsync(`
     SELECT 
       TRIM(label) AS label,
-      SUM(profit) AS profit,
-      SUM(amount_ttc) AS amount_ttc,
+      ROUND(SUM(profit), 2) AS profit,
+      ROUND(SUM(amount_ttc), 2) AS amount_ttc,
       SUM(article_count) AS article_count,
       article_id
     FROM 
@@ -138,7 +119,7 @@ async function articles_stats(
   return stats;
 }
 
-async function top_families(root, { range, limit = 5 }, { loggedAs }) {
+async function top_families(root, { range, limit }, { loggedAs }) {
   const FILTER_BY_RANGE =
     range && range.start && range.end
       ? `WHERE date BETWEEN cast("${range.start}" as datetime) AND cast("${range.end}" as datetime)`
@@ -150,7 +131,11 @@ async function top_families(root, { range, limit = 5 }, { loggedAs }) {
       family_label AS label,
       family_id AS id,
       SUM(article_count) as article_count,
-      SUM(amount_ttc) AS amount_ttc
+      ROUND(SUM(amount_ttc), 2) AS amount_ttc,
+      ROUND(SUM(amount_ht), 2) AS amount_ht,
+      ROUND(SUM(profit), 2) AS profit,
+      vat_rate,
+      ROUND(SUM(amount_vat), 2) as amount_vat
     FROM 
       receipt_line
     ${FILTER_BY_RANGE}

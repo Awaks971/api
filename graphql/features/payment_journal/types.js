@@ -4,6 +4,7 @@ const PaymentJournalType = gql`
   type TopPaymentMode {
     label: String
     amount: Float
+    count: Int
   }
 `;
 

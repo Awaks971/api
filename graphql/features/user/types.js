@@ -39,6 +39,9 @@ const UserType = gql`
     lastname: String!
     new_password: String!
   }
+  input LockAccount {
+    email: String!
+  }
 `;
 
 module.exports = { UserType };

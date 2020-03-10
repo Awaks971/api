@@ -12,7 +12,7 @@ async function top_sellers(root, { range, limit = 5 }, { loggedAs }) {
       seller_name AS name,
       seller_id AS id,
       SUM(article_count) as article_count,
-      SUM(amount_ttc) AS amount_ttc
+      ROUND(SUM(amount_ttc), 2) AS amount_ttc
     FROM 
       receipt_line
     ${FILTER_BY_RANGE}

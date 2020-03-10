@@ -70,6 +70,7 @@ const ReceiptType = gql`
     label: String
     profit: Float
     amount_ttc: Float
+    amount_ht: Float
     article_count: Int
   }
 
@@ -77,6 +78,10 @@ const ReceiptType = gql`
     label: String
     id: ID
     amount_ttc: Float
+    amount_ht: Float
+    amount_vat: Float
+    vat_rate: Float
+    profit: Float
     article_count: Int
   }
   type TopSeller {

@@ -1,7 +1,8 @@
 const DB = require("../config/database");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { AWAKS_JWT_SECRET_KEY } = process.env;
+const axios = require("axios");
+const { AWAKS_JWT_SECRET_KEY, AWAKS_TPV_WEBSERVICE_URI } = process.env;
 
 async function login(req, res, next) {
   const { credentials } = req.body;
@@ -13,22 +14,48 @@ async function login(req, res, next) {
   //   // Verify if user exist
   if (user === undefined) {
     res.status(401).json({
-      message: `No user found with this email: ${credentials.email}`,
+      message: `Pas d'utilisateur: ${credentials.email}`,
       error_code: "USER_NOT_FOUND"
     });
     res.end();
     return;
   }
+
+  if (user.login_attempts === 2) {
+    return res.status(403).json({
+      message: "Votre compte est bloqué",
+      error_code: "LOCKED_USER_ACCOUNT"
+    });
+  }
+
   //   // Verify his password
   const passwordIsValid = await bcrypt.compare(
     credentials.password,
     user.crypted_password
   );
   if (!passwordIsValid) {
+    await DB.queryAsync(
+      `UPDATE user SET login_attempts="${user.login_attempts +
+        1}" WHERE email="${user.email}"`
+    );
+    if (user.login_attempts === 1) {
+      await DB.queryAsync(
+        s`UPDATE user SET status="locked" WHERE email="${user.email}"`
+      );
+      await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/lock-user-account`, {
+        user
+      });
+      return res.status(403).json({
+        message: "Votre compte est bloqué",
+        error_code: "LOCKED_USER_ACCOUNT"
+      });
+    }
     res.status(403).json({
-      message: `Bad password`,
+      message: `Mauvais mot de passe. Reste ${1 -
+        user.login_attempts} essaie(s)`,
       error_code: "BAD_PASSWORD"
     });
+
     res.end();
     return;
   }

@@ -5,7 +5,8 @@ const {
   users,
   disable_user,
   valid_user,
-  finish_register
+  finish_register,
+  lock_account
 } = require("./features/user/resolvers");
 const {
   cash_journals,
@@ -59,7 +60,8 @@ const resolvers = {
     disable_technician: disable_technician,
     disable_user: disable_user,
     valid_user: valid_user,
-    finish_register: finish_register
+    finish_register: finish_register,
+    lock_account: lock_account
   }
 };
 
