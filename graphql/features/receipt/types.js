@@ -90,10 +90,32 @@ const ReceiptType = gql`
     amount_ttc: Float
     article_count: Int
   }
+
+  type Payments {
+    label: String
+  }
   type PaymentMode {
     label: String
     paid_amount: Float
     returned_amount: Float
+  }
+
+  type TopMonth {
+    amount_ht: Float
+    amount_ttc: Float
+    month: String
+    year: String
+    payments: [TopPaymentMonth]
+    total: [TopPaymentMonth]
+  }
+
+  type Year {
+    year: Int
+  }
+
+  type TopPaymentMonth {
+    paid_amount: Float
+    payment_label: String
   }
 `;
 

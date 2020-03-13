@@ -11,8 +11,6 @@ async function login(req, res, next) {
     `SELECT * FROM user WHERE email="${credentials.email}";`
   );
 
-  console.log(req.ip);
-
   //   // Verify if user exist
   if (user === undefined) {
     res.status(401).json({

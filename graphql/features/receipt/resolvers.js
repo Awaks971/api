@@ -1,5 +1,18 @@
 const DB = require("../../../config/database");
-
+const months = {
+  january: "Janvier",
+  february: "Février",
+  march: "Mars",
+  april: "Avril",
+  may: "Mai",
+  june: "Juin",
+  july: "Juillet",
+  august: "Aout",
+  september: "Septembre",
+  october: "Octobre",
+  november: "Novembre",
+  december: "Décembre"
+};
 async function receipt(root, { id }, { loggedAs }) {
   const [receipt] = await DB.queryAsync(`
     SELECT 
@@ -151,11 +164,91 @@ async function top_families(root, { range, limit }, { loggedAs }) {
   return await DB.queryAsync(query);
 }
 
+async function top_month(root, { range }, { loggedAs }) {
+  const amounts = await DB.queryAsync(`
+    SELECT
+      SUM(amount_ttc) AS amount_ttc,
+      SUM(amount_ht) AS amount_ht,
+      MONTHNAME(date) AS month,
+      YEAR(date) as year
+    FROM
+      receipt_line
+    WHERE YEAR(date)=${range} 
+    
+    AND store_id="${loggedAs.id}"
+     
+    GROUP BY 
+      MONTH(date)
+    ORDER BY
+      YEAR(date),
+      MONTH(date) 
+  `);
+  const payments = await DB.queryAsync(`
+    SELECT
+      ROUND(SUM(paid_amount), 2) AS paid_amount,
+      MONTHNAME(date) AS month,
+      payment_label
+    FROM
+      payment_journal
+    WHERE YEAR(date)=${range} 
+    AND
+      store_id="${loggedAs.id}"
+    GROUP BY MONTH(date), payment_label
+  `);
+
+  const clean_payload = amounts.map(amount => ({
+    year: amount.year,
+    month: months[amount.month.toLowerCase()],
+    amount_ht: amount.amount_ht,
+    amount_ttc: amount.amount_ttc,
+    payments: payments
+      .map(({ payment_label, paid_amount, ...pay }) => {
+        if (amount.month.toLowerCase() === pay.month.toLowerCase()) {
+          return { payment_label, paid_amount };
+        } else {
+          return;
+        }
+      })
+      .filter(pay => !!pay)
+  }));
+
+  return clean_payload;
+}
+
+async function total_payment_by_year(root, { range }, { loggedAs }) {
+  const total = await DB.queryAsync(`
+  SELECT
+      ROUND(SUM(paid_amount), 2) AS paid_amount,
+      payment_label
+    FROM
+      payment_journal
+    WHERE
+    	YEAR(date)=${range}
+    AND  store_id="${loggedAs.id}"
+    GROUP BY payment_label`);
+
+  return total;
+}
+
+async function get_years_on_receipt(root, { cash_journal_id }, { loggedAs }) {
+  const years = await DB.queryAsync(`
+  SELECT YEAR(DATE) AS year
+  FROM receipt_line 
+  WHERE store_id="${loggedAs.id}" 
+  GROUP BY YEAR(DATE) 
+  ORDER BY YEAR(DATE)`);
+
+  return years;
+}
+
 module.exports = {
   receipt,
   receipts,
   receipt_vat,
   receipt_lines,
   articles_stats,
-  top_families
+  top_families,
+  get_years_on_receipt,
+  top_month,
+  total_payment_by_year
 };

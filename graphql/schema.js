@@ -51,6 +51,9 @@ const schema = gql`
     top_families(range: RangeInputType, limit: Int): [TopFamily]
     top_sellers(range: RangeInputType, limit: Int): [TopSeller]
     top_payment_mode(range: RangeInputType): [TopPaymentMode]
+    top_month(range: Int): [TopMonth]
+    total_payment_by_year(range: Int): [TopPaymentMonth]
+    get_years_on_receipt: [Year]
   }
 
   type Mutation {

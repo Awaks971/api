@@ -27,7 +27,10 @@ const {
   receipt_lines,
   receipt_vat,
   articles_stats,
-  top_families
+  top_families,
+  top_month,
+  get_years_on_receipt,
+  total_payment_by_year
 } = require("./features/receipt/resolvers");
 
 const resolvers = {
@@ -50,7 +53,10 @@ const resolvers = {
     pagination: pagination,
     top_families: top_families,
     top_sellers: top_sellers,
-    top_payment_mode: top_payment_mode
+    top_payment_mode: top_payment_mode,
+    top_month: top_month,
+    get_years_on_receipt: get_years_on_receipt,
+    total_payment_by_year: total_payment_by_year
   },
 
   Mutation: {
