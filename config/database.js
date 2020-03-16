@@ -19,7 +19,7 @@ const pool = mysql.createPool({
   password: AWAKS_MYSQL_PASSWORD,
   database: AWAKS_MYSQL_DATABASE,
   port: AWAKS_MYSQL_PORT,
-  connectionLimit: 5
+  connectionLimit: 25
 });
 
 /**
