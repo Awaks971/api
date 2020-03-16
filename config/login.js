@@ -4,11 +4,13 @@ const bcrypt = require("bcryptjs");
 const { AWAKS_JWT_SECRET_KEY } = process.env;
 
 async function login(req, res, next) {
+  console.log("DEBUG: Start");
   const { credentials } = req.body;
 
   const [user] = await DB.queryAsync(
     `SELECT * FROM user WHERE email="${credentials.email}";`
   );
+  console.log("DEBUG: Check user passed");
 
   //   // Verify if user exist
   if (user === undefined) {
@@ -19,6 +21,9 @@ async function login(req, res, next) {
     res.end();
     return;
   }
+
+  console.log("DEBUG: Found a user");
+
   //   // Verify his password
   const passwordIsValid = await bcrypt.compare(
     credentials.password,
@@ -32,11 +37,14 @@ async function login(req, res, next) {
     res.end();
     return;
   }
+  console.log("DEBUG: Bad password passed");
 
   // Get all user companies
   const fetched_companies = await DB.queryAsync(
     `SELECT name, id, address, postal_code, city, phone, siret FROM store WHERE company_id="${user.company_id}";`
   );
+
+  console.log("DEBUG: Get companies");
 
   const companies = fetched_companies.map(company => {
     return {
@@ -52,6 +60,8 @@ async function login(req, res, next) {
     };
   });
 
+  console.log("DEBUG: Middle");
+
   // Generate new token
   const token = jwt.sign(
     {
@@ -66,6 +76,8 @@ async function login(req, res, next) {
     }
   );
 
+  console.log("DEBUG: api key created");
+
   // Remove password from user in database
   delete user.crypted_password;
 
@@ -73,6 +85,9 @@ async function login(req, res, next) {
   user.companies = companies;
   user.loggedAs = companies[0];
   res.json(user);
+
+  console.log("DEBUG: next");
+
   next();
 }
 
