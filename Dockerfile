@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:latest
 
 RUN mkdir -p /usr/src/app/awaks-server
 # Specify working directory
