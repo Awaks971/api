@@ -26,7 +26,7 @@
     "mariadb": "^2.1.5",
     "memorystore": "^1.6.2",
     "morgan": "~1.9.1",
-    "mysql": "latest",
+    "mysql2": "^2.1.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
