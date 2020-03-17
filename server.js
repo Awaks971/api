@@ -41,7 +41,7 @@ app.use(
  * Login handler to set token in GraphQL context
  */
 
-app.post("/api/login", headers, loginHandler);
+app.post("/login", headers, loginHandler);
 
 /**
  * GraphQL setup
@@ -53,6 +53,6 @@ const server = new ApolloServer({
   context
 });
 
-server.applyMiddleware({ app, path: "/api/graphql" });
+server.applyMiddleware({ app });
 
 module.exports = app;
