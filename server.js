@@ -53,6 +53,6 @@ const server = new ApolloServer({
   context
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, path: "/api/graphql" });
 
 module.exports = app;
