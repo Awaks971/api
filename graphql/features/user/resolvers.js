@@ -46,6 +46,34 @@ async function finish_register(root, { user }, { userId }) {
   return user;
 }
 
+async function update_password(root, { new_password }, { userId }) {
+  const new_crypted_password = await bcrypt.hash(new_password, 10);
+
+  await DB.queryAsync(
+    `UPDATE user SET
+      crypted_password="${new_crypted_password}"
+    WHERE id="${userId}"`
+  );
+
+  return { id: userId };
+}
+
+async function update_personal_informations(
+  root,
+  { personal_informations },
+  { userId }
+) {
+  const keys = Object.keys(personal_informations);
+
+  await DB.queryAsync(
+    `UPDATE user SET
+      ${keys.map(key => `${key}="${personal_informations[key]}"`)}
+    WHERE id="${userId}"`
+  );
+
+  return { user: personal_informations };
+}
+
 async function valid_user(root, { userId, company_id }) {
   await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/valid-user`, {
     userId,
@@ -113,5 +141,7 @@ module.exports = {
   users,
   disable_user,
   valid_user,
-  finish_register
+  finish_register,
+  update_password,
+  update_personal_informations
 };

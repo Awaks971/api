@@ -6,7 +6,9 @@ const {
   disable_user,
   valid_user,
   finish_register,
-  lock_account
+  lock_account,
+  update_password,
+  update_personal_informations
 } = require("./features/user/resolvers");
 const {
   cash_journals,
@@ -67,7 +69,9 @@ const resolvers = {
     disable_user: disable_user,
     valid_user: valid_user,
     finish_register: finish_register,
-    lock_account: lock_account
+    lock_account: lock_account,
+    update_password: update_password,
+    update_personal_informations: update_personal_informations
   }
 };
 

@@ -33,6 +33,12 @@ const UserType = gql`
     password: String!
   }
 
+  input PersonalInformationsInputType {
+    email: String!
+    firstname: String!
+    lastname: String!
+  }
+
   input FinishRegisterInputType {
     email: String!
     firstname: String!
