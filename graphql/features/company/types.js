@@ -22,6 +22,7 @@ const CompanyType = gql`
     line1: String
     postal_code: String
     country: String
+    city: String
   }
 
   input SwitchCompanyInputType {

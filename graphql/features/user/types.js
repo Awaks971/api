@@ -38,6 +38,12 @@ const UserType = gql`
     firstname: String!
     lastname: String!
   }
+  input StoreInputType {
+    name: String
+    id: String
+    phone: String
+    address: CompanyAddressInputType
+  }
 
   input FinishRegisterInputType {
     email: String!

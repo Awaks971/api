@@ -8,7 +8,8 @@ const {
   finish_register,
   lock_account,
   update_password,
-  update_personal_informations
+  update_personal_informations,
+  update_store
 } = require("./features/user/resolvers");
 const {
   cash_journals,
@@ -71,7 +72,8 @@ const resolvers = {
     finish_register: finish_register,
     lock_account: lock_account,
     update_password: update_password,
-    update_personal_informations: update_personal_informations
+    update_personal_informations: update_personal_informations,
+    update_store: update_store
   }
 };
 

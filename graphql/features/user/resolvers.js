@@ -74,11 +74,36 @@ async function update_personal_informations(
   return { user: personal_informations };
 }
 
+async function update_store(root, { store }, { loggedAs }) {
+  const keys = Object.keys(store);
+
+  await DB.queryAsync(
+    `UPDATE store SET
+      ${keys.map(key => `${key}="${store[key]}"`)}
+    WHERE id="${loggedAs.id}"`
+  );
+
+  return store;
+}
+
 async function valid_user(root, { userId, company_id }) {
   await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/valid-user`, {
     userId,
     company_id
   });
+}
+async function reset_password(root, { email }) {
+  const [potential_user] = await DB.queryAsync(
+    `SELECT id FROM user WHERE email="${email}"`
+  );
+
+  if (!potential_user) {
+    throw new Error("Pas d'utilisateur avec cet email: " + email);
+  } else {
+    await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/reset-password`, {
+      email
+    });
+  }
 }
 
 async function register(root, { credentials }, context) {
@@ -143,5 +168,7 @@ module.exports = {
   valid_user,
   finish_register,
   update_password,
-  update_personal_informations
+  update_personal_informations,
+  reset_password,
+  update_store
 };

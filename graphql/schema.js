@@ -66,6 +66,7 @@ const schema = gql`
     finish_register(user: FinishRegisterInputType!): User
     lock_account(user: LockAccount!): User
     update_password(new_password: String!): User
+    update_store(store: StoreInputType!): Company
     update_personal_informations(
       personal_informations: PersonalInformationsInputType
     ): User
