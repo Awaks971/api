@@ -9,7 +9,8 @@ const {
   lock_account,
   update_password,
   update_personal_informations,
-  update_store
+  update_store,
+  send_reset_password
 } = require("./features/user/resolvers");
 const {
   cash_journals,

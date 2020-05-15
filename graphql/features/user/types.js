@@ -20,6 +20,10 @@ const UserType = gql`
     loggedAs: String
     userCompanies: [Company]
   }
+  type ResetPassword {
+    token_id: ID!
+    message: String
+  }
 
   input CredentialsInputType {
     email: String!

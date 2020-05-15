@@ -60,7 +60,7 @@ async function login(req, res, next) {
     },
     AWAKS_JWT_SECRET_KEY,
     {
-      expiresIn: "30d"
+      expiresIn: "1h"
     }
   );
   // Remove password from user in database

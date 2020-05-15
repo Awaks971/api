@@ -92,17 +92,16 @@ async function valid_user(root, { userId, company_id }) {
     company_id
   });
 }
-async function reset_password(root, { email }) {
-  const [potential_user] = await DB.queryAsync(
-    `SELECT id FROM user WHERE email="${email}"`
+
+async function reset_password(root, { token }) {
+  const { token_id } = jwt.decode(token);
+
+  const [potential_token] = DB.queryAsync(
+    `SELECT id, val, validity FROM tokens WHERE id="${token_id}"`
   );
 
-  if (!potential_user) {
-    throw new Error("Pas d'utilisateur avec cet email: " + email);
-  } else {
-    await axios.post(`${AWAKS_TPV_WEBSERVICE_URI}/reset-password`, {
-      email
-    });
+  if (!potential_token) {
+    return { token_id: null, message: "" };
   }
 }
 
@@ -168,7 +167,7 @@ module.exports = {
   valid_user,
   finish_register,
   update_password,
-  update_personal_informations,
   reset_password,
+  update_personal_informations,
   update_store
 };
