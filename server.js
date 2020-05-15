@@ -13,6 +13,7 @@ const context = require("./graphql/context");
 const headers = require("./config/headers");
 const app = express();
 const loginHandler = require("./config/login");
+const update_password_handler = require("./config/reset-password");
 
 const session = require("express-session");
 const MemoryStore = require("memorystore")(session);
@@ -42,6 +43,7 @@ app.use(
  */
 
 app.post("/api/login", headers, loginHandler);
+app.post("/api/edit-password", headers, update_password_handler);
 
 /**
  * GraphQL setup

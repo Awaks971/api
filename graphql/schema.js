@@ -65,6 +65,12 @@ const schema = gql`
     valid_user(userId: ID!, company_id: ID!): User
     finish_register(user: FinishRegisterInputType!): User
     lock_account(user: LockAccount!): User
+    update_password(new_password: String!): User
+    reset_password(token: String!): ResetPassword
+    update_store(store: StoreInputType!): Company
+    update_personal_informations(
+      personal_informations: PersonalInformationsInputType
+    ): User
   }
 `;
 

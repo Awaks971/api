@@ -25,6 +25,7 @@ async function context({ req }) {
       loggedAs
     };
   } catch (e) {
+    console.log(e);
     throw new AuthenticationError(
       "Authentication token is invalid, please log in"
     );
